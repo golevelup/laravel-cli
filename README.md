@@ -1,7 +1,4 @@
-@badassery/laravel-up
-=====================
-
-
+# @badassery/laravel-up
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/@badassery/laravel-up.svg)](https://npmjs.org/package/@badassery/laravel-up)
@@ -9,30 +6,38 @@
 [![License](https://img.shields.io/npm/l/@badassery/laravel-up.svg)](https://github.com/badassery/laravel-up/blob/master/package.json)
 
 <!-- toc -->
-* [Usage](#usage)
-* [Commands](#commands)
-<!-- tocstop -->
+
+- [Usage](#usage)
+- [Commands](#commands)
+  <!-- tocstop -->
+
 # Usage
+
 <!-- usage -->
+
 ```sh-session
 $ npm install -g @badassery/laravel-up
 $ lvl COMMAND
 running command...
 $ lvl (-v|--version|version)
-@badassery/laravel-up/0.0.4 linux-x64 node-v10.13.0
+@badassery/laravel-up/0.0.4 linux-x64 node-v10.15.2
 $ lvl --help [COMMAND]
 USAGE
   $ lvl COMMAND
 ...
 ```
+
 <!-- usagestop -->
+
 # Commands
+
 <!-- commands -->
-* [`lvl artisan [COMMAND]`](#lvl-artisan-command)
-* [`lvl hello [FILE]`](#lvl-hello-file)
-* [`lvl help [COMMAND]`](#lvl-help-command)
-* [`lvl new`](#lvl-new)
-* [`lvl up`](#lvl-up)
+
+- [`lvl artisan [COMMAND]`](#lvl-artisan-command)
+- [`lvl help [COMMAND]`](#lvl-help-command)
+- [`lvl init [FILE]`](#lvl-init-file)
+- [`lvl new`](#lvl-new)
+- [`lvl up`](#lvl-up)
 
 ## `lvl artisan [COMMAND]`
 
@@ -50,26 +55,6 @@ OPTIONS
 
 _See code: [src/commands/artisan.ts](https://github.com/badassery/laravel-up/blob/v0.0.4/src/commands/artisan.ts)_
 
-## `lvl hello [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ lvl hello [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-
-EXAMPLE
-  $ lvl hello
-  hello world from ./src/hello.ts!
-```
-
-_See code: [src/commands/hello.ts](https://github.com/badassery/laravel-up/blob/v0.0.4/src/commands/hello.ts)_
-
 ## `lvl help [COMMAND]`
 
 display help for lvl
@@ -86,6 +71,22 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.1/src/commands/help.ts)_
+
+## `lvl init [FILE]`
+
+describe the command here
+
+```
+USAGE
+  $ lvl init [FILE]
+
+OPTIONS
+  -f, --force
+  -h, --help       show CLI help
+  -n, --name=name  name to print
+```
+
+_See code: [src/commands/init.ts](https://github.com/badassery/laravel-up/blob/v0.0.4/src/commands/init.ts)_
 
 ## `lvl new`
 
@@ -111,4 +112,5 @@ USAGE
 ```
 
 _See code: [src/commands/up.ts](https://github.com/badassery/laravel-up/blob/v0.0.4/src/commands/up.ts)_
+
 <!-- commandsstop -->
