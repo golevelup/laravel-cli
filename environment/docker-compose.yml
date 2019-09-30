@@ -11,8 +11,8 @@ services:
     user: "1000:1000"
     volumes:
       - ./:/var/www:delegated
-#    env_file:
-#      - .docker.env
+    env_file:
+      - environment/docker.env
     environment:
       - "DB_PORT=3306"
       - "DB_HOST=database"

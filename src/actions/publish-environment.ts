@@ -4,10 +4,11 @@ import * as shelljs from "shelljs";
 import * as envfile from "envfile";
 import * as fs from "fs";
 import { readFileAsync, writeFileAsync, PromptEnvironmentDef } from ".";
+import * as ip from "ip";
 
 export const publishEnvironment = async (
   location: string,
-  dbConfig: PromptEnvironmentDef
+  envConfig: PromptEnvironmentDef
 ) => {
   const baseEnvPath = path.join(__dirname, "../../environment");
   const srcDockerComposePath = path.join(baseEnvPath, "docker-compose.yml");
@@ -15,23 +16,27 @@ export const publishEnvironment = async (
 
   const dockerComposeContents = await readFileAsync(srcDockerComposePath);
 
-  const composeYaml = jsyaml.load(dockerComposeContents.toString());
+  let composeYaml = jsyaml.load(dockerComposeContents.toString());
 
   // TODO: Need to actually generate different service configs for different DB engines
   const mySqlService = {
     image: "mysql:5.7",
     volumes: ["dbdata:/var/lib/mysql"],
-    ports: ["3306:3306"],
+    ports: [`${envConfig.dbHostPort}:3306`],
     environment: [
-      `MYSQL_ROOT_PASSWORD=${dbConfig.dbRootPassword}`,
-      `MYSQL_DATABASE=${dbConfig.dbName}`
+      `MYSQL_ROOT_PASSWORD=${envConfig.dbRootPassword}`,
+      `MYSQL_DATABASE=${envConfig.dbName}`
     ]
   };
 
-  const combined = jsyaml.dump({
+  if (envConfig.webPort != 8080) {
+    composeYaml["services"]["web"]["ports"][0] = `${envConfig.webPort}:80`;
+  }
+
+  composeYaml = {
     ...composeYaml,
     services: { ...composeYaml.services, database: mySqlService }
-  });
+  };
 
   shelljs.cd(location);
 
@@ -42,7 +47,16 @@ export const publishEnvironment = async (
   );
 
   shelljs.cp("-R", sourceEnvPath, "./environment");
-  await writeFileAsync(destDockerComposePath, combined);
+  await writeFileAsync(destDockerComposePath, jsyaml.dump(composeYaml));
+
+  const dockerEnvPath = path.join(location, "environment/docker.env");
+  const dockerEnvFileContents = envfile.parseFileSync(dockerEnvPath);
+
+  dockerEnvFileContents["PHP_XDEBUG_REMOTE_HOST"] = ip.address();
+  await writeFileAsync(
+    dockerEnvPath,
+    envfile.stringifySync(dockerEnvFileContents)
+  );
 
   const envPath = path.join(location, ".env");
   const envFileContents = envfile.parseFileSync(envPath);
@@ -51,8 +65,8 @@ export const publishEnvironment = async (
   const envExampleFileContents = envfile.parseFileSync(envExamplePath);
 
   const envOverrides = [
-    ["DB_PASSWORD", dbConfig.dbRootPassword],
-    ["DB_DATABASE", dbConfig.dbName]
+    ["DB_PASSWORD", envConfig.dbRootPassword],
+    ["DB_DATABASE", envConfig.dbName]
   ];
 
   envOverrides.forEach(([key, value]) => {

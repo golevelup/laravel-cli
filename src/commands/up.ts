@@ -1,12 +1,14 @@
-import { Command } from "@oclif/command";
+import { Command, flags } from "@oclif/command";
+import chalk from "chalk";
 import * as shelljs from "shelljs";
 import { testTargetDirectory, displayCommandHeader } from "../actions";
-import cli from "cli-ux";
 
 export default class Up extends Command {
   static description = "Spins Up your local dev environment";
 
-  static flags = {};
+  static flags = {
+    verbose: flags.boolean({ char: "v", default: false })
+  };
 
   static args = [
     {
@@ -30,8 +32,10 @@ export default class Up extends Command {
     }
 
     shelljs.cd(directory);
-    // shelljs.exec("docker-compose up -d");
+    shelljs.exec("docker-compose up -d", { silent: !flags.verbose });
 
-    // cli.url('www.google.com', 'www.google.com');
+    console.log(
+      chalk.green("Your app is now available at http://localhost:8080")
+    );
   }
 }

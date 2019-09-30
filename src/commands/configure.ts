@@ -7,8 +7,6 @@ import {
   testTargetDirectory,
   publishEnvironment
 } from "../actions";
-import * as path from "path";
-import * as fs from "fs";
 import chalk from "chalk";
 
 export default class Configure extends Command {
@@ -28,6 +26,23 @@ export default class Configure extends Command {
     displayCommandHeader(
       "This will guide you through configuration of an existing vanilla Laravel application to be used as an Up project"
     );
+
+    const mainPrompt = await inquirer.prompt([
+      {
+        default: pwd,
+        name: "location",
+        message:
+          "Where is the Laravel app you would like to configure? (Defaults to current directory)",
+        type: "input"
+      }
+    ]);
+
+    const { location } = mainPrompt;
+
+    if (!testTargetDirectory(location)) {
+      return;
+    }
+
     console.log(
       chalk.yellow(
         "This process will make changes to the file system of your project."
@@ -51,35 +66,9 @@ export default class Configure extends Command {
       return;
     }
 
-    const mainPrompt = await inquirer.prompt([
-      {
-        default: pwd,
-        name: "location",
-        message:
-          "Where is the Laravel app you would like to configure (defaults to current directory)?",
-        type: "input"
-      }
-    ]);
-
-    const { location } = mainPrompt;
-
-    if (!testTargetDirectory(location)) {
-      return;
-    }
-
     const envConfig = await promptEnvironment();
 
     await publishEnvironment(location, envConfig);
-
-    // const envPath = path.join(location, '.env');
-    // const envFileContents = envfile.parseFileSync(envPath);
-
-    // console.log(envFileContents);
-
-    // envFileContents['DB_PASSWORD'] = envConfig.dbRootPassword;
-    // envFileContents['DB_DATABASE'] = envConfig.dbName;
-
-    // fs.writeFileSync(envPath, envfile.stringifySync(envFileContents));
 
     console.log(
       chalk.green("Your project is ready! Just run `lvl up` to start it")

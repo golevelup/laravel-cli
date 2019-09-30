@@ -2,14 +2,12 @@ import { Command, flags } from "@oclif/command";
 import chalk from "chalk";
 import * as cli from "cli-ux";
 import * as inquirer from "inquirer";
-import * as jsyaml from "js-yaml";
 import * as path from "path";
 import * as shelljs from "shelljs";
 import {
   promptEnvironment,
   displayCommandHeader,
-  writeFileAsync,
-  readFileAsync
+  publishEnvironment
 } from "../actions";
 
 export default class New extends Command {
@@ -56,6 +54,8 @@ export default class New extends Command {
       return;
     }
 
+    const dbPrompt = await promptEnvironment();
+
     cli.ux.action.start("Creating your App!");
 
     shelljs.exec(
@@ -65,40 +65,10 @@ export default class New extends Command {
 
     cli.ux.action.stop();
 
-    const baseEnvPath = path.join(__dirname, "../../environment");
-    const srcDockerComposePath = path.join(baseEnvPath, "docker-compose.yml");
-    const sourceEnvPath = path.join(baseEnvPath, "resources");
+    await publishEnvironment(path.join(location, projectName), dbPrompt);
 
-    const dockerComposeContents = await readFileAsync(srcDockerComposePath);
-
-    const composeYaml = jsyaml.load(dockerComposeContents.toString());
-
-    const dbPrompt = await promptEnvironment();
-
-    const mySqlService = {
-      image: "mysql:5.7",
-      volumes: ["dbdata:/var/lib/mysql"],
-      ports: ["3306:3306"],
-      environment: [
-        `MYSQL_ROOT_PASSWORD=${dbPrompt.dbRootPassword}`,
-        `MYSQL_DATABASE=${dbPrompt.dbName}`
-      ]
-    };
-
-    const combined = jsyaml.dump({
-      ...composeYaml,
-      services: { ...composeYaml.services, database: mySqlService }
-    });
-
-    shelljs.cd(projectName);
-
-    const fullProjectPath = shelljs.pwd().toString();
-    const destDockerComposePath = path.join(
-      fullProjectPath,
-      "docker-compose.yml"
+    console.log(
+      chalk.green("Your project is ready! Just run `lvl up` to start it")
     );
-
-    shelljs.cp("-R", sourceEnvPath, "./environment");
-    await writeFileAsync(destDockerComposePath, combined);
   }
 }
