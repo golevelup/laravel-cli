@@ -1,4 +1,4 @@
-# Laravel Up
+# Laravel Up ⬆️
 
 ## A Delightful Developer Environment and CLI for the Laravel Framework
 

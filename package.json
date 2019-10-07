@@ -1,6 +1,6 @@
 {
   "name": "@badassery/laravel-up",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "author": "Jesse Carter @WonderPanda",
   "private": false,
   "access": "public",
@@ -28,6 +28,9 @@
     "tslib": "^1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@commitlint/prompt": "^8.2.0",
     "@oclif/dev-cli": "^1",
     "@oclif/test": "^1",
     "@oclif/tslint": "^3",
@@ -41,11 +44,15 @@
     "@types/node": "^10",
     "@types/shelljs": "^0.8.5",
     "chai": "^4",
+    "commitizen": "^4.0.3",
+    "conventional-changelog-cli": "^2.0.23",
+    "cz-conventional-changelog": "^3.0.2",
     "globby": "^10",
     "husky": "^3.0.5",
     "lint-staged": "^9.3.0",
     "mocha": "^5",
     "nyc": "^13",
+    "oclif": "^1.14.0",
     "prettier": "^1.18.2",
     "ts-node": "^8",
     "tslint": "^5",
@@ -63,7 +70,10 @@
   ],
   "homepage": "https://github.com/badassery/laravel-up",
   "keywords": [
-    "oclif"
+    "oclif",
+    "laravel",
+    "cli",
+    "up"
   ],
   "license": "MIT",
   "main": "lib/index.js",
@@ -76,15 +86,24 @@
   },
   "repository": "badassery/laravel-up",
   "scripts": {
+    "commit": "yarn run git-cz",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "tslint -p test -t stylish",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
     "test": "nyc --extension .ts mocha --forbid-only \"test/**/*.test.ts\"",
-    "version": "oclif-dev readme && git add README.md"
+    "version": "oclif-dev readme && git add README.md",
+    "changelog": "yarn run conventional-changelog -i CHANGELOG.md -s -p angular",
+    "gencommand": "yarn oclif command"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "lint-staged": {
