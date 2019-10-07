@@ -13,11 +13,6 @@ services:
       - ./:/var/www:delegated
     env_file:
       - environment/docker.env
-    environment:
-      - "DB_PORT=3306"
-      - "DB_HOST=database"
-      - "REDIS_HOST=redis"
-      - "REDIS_PORT=6379"
     ports:
       - 9000:9000
 

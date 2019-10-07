@@ -7,6 +7,7 @@ import {
   testTargetDirectory,
   publishEnvironment
 } from "../actions";
+import * as shelljs from "shelljs";
 import chalk from "chalk";
 
 export default class Configure extends Command {
@@ -20,8 +21,8 @@ export default class Configure extends Command {
   static args = [];
 
   async run() {
-    // const pwd = shelljs.pwd().toString();
-    const pwd = "/home/jesse/code/laravel-tests/vanilla1";
+    const pwd = shelljs.pwd().toString();
+    // const pwd = "/home/jesse/code/laravel-tests/vanilla1";
 
     displayCommandHeader(
       "This will guide you through configuration of an existing vanilla Laravel application to be used as an Up project"

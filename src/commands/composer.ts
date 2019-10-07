@@ -1,8 +1,8 @@
 import { Command, flags } from "@oclif/command";
 import * as shelljs from "shelljs";
 
-export default class Artisan extends Command {
-  static description = "Runs an artisan command (eg make:controller {name})";
+export default class Composer extends Command {
+  static description = "Executes a composer command";
 
   static strict = false;
 
@@ -13,7 +13,7 @@ export default class Artisan extends Command {
     }),
     silent: flags.boolean({
       char: "s",
-      description: "Silent mode prevents artisan shell output",
+      description: "Silent mode prevents Composer shell output",
       default: false
     })
   };
@@ -21,17 +21,18 @@ export default class Artisan extends Command {
   static args = [
     {
       name: "command",
-      description: "The command to pass to artisan",
+      description:
+        "The command to pass to composer. Should be wrapped in quotes if passing flags",
       required: true
     }
   ];
 
   async run() {
-    const { argv, flags } = this.parse(Artisan);
+    const { argv, flags } = this.parse(Composer);
 
     const combined = argv.join(" ");
 
-    let commandText = `docker-compose exec -T app php artisan ${combined}`;
+    let commandText = `docker container run --rm --user $(id -u):$(id -g) -v $(pwd):/app composer ${combined}`;
     if (flags["command-help"]) {
       commandText = commandText = `${commandText} --help`;
     }

@@ -1,4 +1,6 @@
-# @badassery/laravel-up
+# Laravel Up
+
+## A Delightful Developer Environment and CLI for the Laravel Framework
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/@badassery/laravel-up.svg)](https://npmjs.org/package/@badassery/laravel-up)
@@ -7,6 +9,7 @@
 
 <!-- toc -->
 
+- [@badassery/laravel-up](#badasserylaravel-up)
 - [Usage](#usage)
 - [Commands](#commands)
   <!-- tocstop -->
@@ -20,7 +23,7 @@ $ npm install -g @badassery/laravel-up
 $ lvl COMMAND
 running command...
 $ lvl (-v|--version|version)
-@badassery/laravel-up/0.0.4 linux-x64 node-v10.15.2
+@badassery/laravel-up/0.0.8 linux-x64 node-v10.15.2
 $ lvl --help [COMMAND]
 USAGE
   $ lvl COMMAND
@@ -33,27 +36,62 @@ USAGE
 
 <!-- commands -->
 
-- [`lvl artisan [COMMAND]`](#lvl-artisan-command)
+- [`lvl artisan COMMAND`](#lvl-artisan-command)
+- [`lvl composer COMMAND`](#lvl-composer-command)
+- [`lvl configure`](#lvl-configure)
 - [`lvl help [COMMAND]`](#lvl-help-command)
-- [`lvl init [FILE]`](#lvl-init-file)
 - [`lvl new`](#lvl-new)
-- [`lvl up`](#lvl-up)
+- [`lvl up [DIRECTORY]`](#lvl-up-directory)
 
-## `lvl artisan [COMMAND]`
+## `lvl artisan COMMAND`
 
 Runs an artisan command (eg make:controller {name})
 
 ```
 USAGE
-  $ lvl artisan [COMMAND]
+  $ lvl artisan COMMAND
+
+ARGUMENTS
+  COMMAND  The command to pass to artisan
 
 OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
+  -h, --command-help  Passes --help to the underlying composer command
+  -s, --silent        Silent mode prevents artisan shell output
 ```
 
-_See code: [src/commands/artisan.ts](https://github.com/badassery/laravel-up/blob/v0.0.4/src/commands/artisan.ts)_
+_See code: [src/commands/artisan.ts](https://github.com/badassery/laravel-up/blob/v0.0.8/src/commands/artisan.ts)_
+
+## `lvl composer COMMAND`
+
+Executes a composer command
+
+```
+USAGE
+  $ lvl composer COMMAND
+
+ARGUMENTS
+  COMMAND  The command to pass to composer. Should be wrapped in quotes if passing flags
+
+OPTIONS
+  -h, --command-help  Passes --help to the underlying composer command
+  -s, --silent        Silent mode prevents Composer shell output
+```
+
+_See code: [src/commands/composer.ts](https://github.com/badassery/laravel-up/blob/v0.0.8/src/commands/composer.ts)_
+
+## `lvl configure`
+
+Configures an existing vanilla Laravel app as an Up project
+
+```
+USAGE
+  $ lvl configure
+
+OPTIONS
+  -h, --help  show CLI help
+```
+
+_See code: [src/commands/configure.ts](https://github.com/badassery/laravel-up/blob/v0.0.8/src/commands/configure.ts)_
 
 ## `lvl help [COMMAND]`
 
@@ -72,22 +110,6 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.2.1/src/commands/help.ts)_
 
-## `lvl init [FILE]`
-
-describe the command here
-
-```
-USAGE
-  $ lvl init [FILE]
-
-OPTIONS
-  -f, --force
-  -h, --help       show CLI help
-  -n, --name=name  name to print
-```
-
-_See code: [src/commands/init.ts](https://github.com/badassery/laravel-up/blob/v0.0.4/src/commands/init.ts)_
-
 ## `lvl new`
 
 Creates a new Laravel Up project
@@ -100,17 +122,23 @@ OPTIONS
   -v, --verbose
 ```
 
-_See code: [src/commands/new.ts](https://github.com/badassery/laravel-up/blob/v0.0.4/src/commands/new.ts)_
+_See code: [src/commands/new.ts](https://github.com/badassery/laravel-up/blob/v0.0.8/src/commands/new.ts)_
 
-## `lvl up`
+## `lvl up [DIRECTORY]`
 
 Spins Up your local dev environment
 
 ```
 USAGE
-  $ lvl up
+  $ lvl up [DIRECTORY]
+
+ARGUMENTS
+  DIRECTORY  The Laravel Up directory you would like to launch
+
+OPTIONS
+  -v, --verbose
 ```
 
-_See code: [src/commands/up.ts](https://github.com/badassery/laravel-up/blob/v0.0.4/src/commands/up.ts)_
+_See code: [src/commands/up.ts](https://github.com/badassery/laravel-up/blob/v0.0.8/src/commands/up.ts)_
 
 <!-- commandsstop -->

@@ -4,7 +4,12 @@ import * as shelljs from "shelljs";
 import * as envfile from "envfile";
 import * as fs from "fs";
 import { readFileAsync, writeFileAsync, PromptEnvironmentDef } from ".";
-import * as ip from "ip";
+import { POSTGRES } from "../constants";
+import {
+  makeMySqlService,
+  DbServiceConfig,
+  makePostgresService
+} from "../services";
 
 export const publishEnvironment = async (
   location: string,
@@ -18,16 +23,21 @@ export const publishEnvironment = async (
 
   let composeYaml = jsyaml.load(dockerComposeContents.toString());
 
-  // TODO: Need to actually generate different service configs for different DB engines
-  const mySqlService = {
-    image: "mysql:5.7",
-    volumes: ["dbdata:/var/lib/mysql"],
-    ports: [`${envConfig.dbHostPort}:3306`],
-    environment: [
-      `MYSQL_ROOT_PASSWORD=${envConfig.dbRootPassword}`,
-      `MYSQL_DATABASE=${envConfig.dbName}`
-    ]
+  let dbService;
+  const dbConfig: DbServiceConfig = {
+    database: envConfig.dbName,
+    password: envConfig.dbRootPassword,
+    port: envConfig.dbHostPort
   };
+
+  switch (envConfig.engine) {
+    case POSTGRES:
+      dbService = makePostgresService(dbConfig);
+      break;
+    default:
+      dbService = makeMySqlService(dbConfig);
+      break;
+  }
 
   if (envConfig.webPort != 8080) {
     composeYaml["services"]["web"]["ports"][0] = `${envConfig.webPort}:80`;
@@ -35,7 +45,7 @@ export const publishEnvironment = async (
 
   composeYaml = {
     ...composeYaml,
-    services: { ...composeYaml.services, database: mySqlService }
+    services: { ...composeYaml.services, database: dbService }
   };
 
   shelljs.cd(location);
@@ -49,22 +59,18 @@ export const publishEnvironment = async (
   shelljs.cp("-R", sourceEnvPath, "./environment");
   await writeFileAsync(destDockerComposePath, jsyaml.dump(composeYaml));
 
-  const dockerEnvPath = path.join(location, "environment/docker.env");
-  const dockerEnvFileContents = envfile.parseFileSync(dockerEnvPath);
-
-  dockerEnvFileContents["PHP_XDEBUG_REMOTE_HOST"] = ip.address();
-  await writeFileAsync(
-    dockerEnvPath,
-    envfile.stringifySync(dockerEnvFileContents)
-  );
-
-  const envPath = path.join(location, ".env");
-  const envFileContents = envfile.parseFileSync(envPath);
-
   const envExamplePath = path.join(location, ".env.example");
   const envExampleFileContents = envfile.parseFileSync(envExamplePath);
 
+  const envPath = path.join(location, ".env");
+  if (!fs.existsSync(envPath)) {
+    shelljs.cp(envExamplePath, envPath);
+  }
+  const envFileContents = envfile.parseFileSync(envPath);
+
   const envOverrides = [
+    ["DB_HOST", "database"],
+    ["DB_USERNAME", "root"],
     ["DB_PASSWORD", envConfig.dbRootPassword],
     ["DB_DATABASE", envConfig.dbName]
   ];
