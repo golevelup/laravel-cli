@@ -42,6 +42,7 @@ USAGE
 - [`lvl help [COMMAND]`](#lvl-help-command)
 - [`lvl new`](#lvl-new)
 - [`lvl up [DIRECTORY]`](#lvl-up-directory)
+- [`lvl down [DIRECTORY]`](#lvl-down-directory)
 
 ## `lvl artisan COMMAND`
 
@@ -140,5 +141,22 @@ OPTIONS
 ```
 
 _See code: [src/commands/up.ts](https://github.com/badassery/laravel-up/blob/v0.0.8/src/commands/up.ts)_
+
+## `lvl down [DIRECTORY]`
+
+To Stop your local dev environment
+
+```
+USAGE
+  $ lvl down [DIRECTORY]
+
+ARGUMENTS
+  DIRECTORY  Running Laravel Up directory you would like to stop
+
+OPTIONS
+  -v, --verbose
+```
+
+_See code: [src/commands/down.ts](https://github.com/badassery/laravel-up/blob/v0.0.8/src/commands/down.ts)_
 
 <!-- commandsstop -->
