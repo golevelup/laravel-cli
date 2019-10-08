@@ -142,19 +142,20 @@ OPTIONS
 
 _See code: [src/commands/up.ts](https://github.com/badassery/laravel-up/blob/v0.0.8/src/commands/up.ts)_
 
-## `lvl down [DIRECTORY]`
+## `lvl down [DIRECTORY] [OPTIONS,]`
 
 To Stop your local dev environment
 
 ```
 USAGE
-  $ lvl down [DIRECTORY]
+  $ lvl down [DIRECTORY] [OPTIONS,]
 
 ARGUMENTS
   DIRECTORY  Running Laravel Up directory you would like to stop
 
 OPTIONS
   -v, --verbose
+  -d, --destroy To remove dev environment docker volumes
 ```
 
 _See code: [src/commands/down.ts](https://github.com/badassery/laravel-up/blob/v0.0.8/src/commands/down.ts)_
