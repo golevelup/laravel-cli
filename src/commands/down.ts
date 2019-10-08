@@ -5,7 +5,7 @@ import * as shelljs from "shelljs";
 import { testTargetDirectory, displayCommandHeader } from "../actions";
 
 export default class Down extends Command {
-  static description = "describe the command here";
+  static description = "Stops a running Laravel Up project";
 
   static flags = {
     verbose: flags.boolean({ char: "v", default: false })
@@ -34,6 +34,6 @@ export default class Down extends Command {
     shelljs.cd(directory);
     shelljs.exec("docker-compose down", { silent: !flags.verbose });
 
-    console.log(chalk.green("Your app is stopped"));
+    console.log(chalk.green("\nYour app is stopped"));
   }
 }
