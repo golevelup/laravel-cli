@@ -58,10 +58,21 @@ export default class New extends Command {
 
     cli.ux.action.start("Creating your App!");
 
-    shelljs.exec(
-      `docker container run --rm --user $(id -u):$(id -g) -v $(pwd):/app composer create-project --prefer-dist laravel/laravel ${projectName}`,
-      { silent: !flags.verbose }
-    );
+    if (this.config.windows) {
+      // We need to interpolate this value in JS since we can't in cmd.exe
+      const currentDir = shelljs.pwd();
+
+      // Omit the --user argument on Windows. It is not necessary
+      shelljs.exec(
+        `docker container run --rm -v ${currentDir}:/app composer create-project --prefer-dist laravel/laravel ${projectName}`,
+        { silent: !flags.verbose }
+      );
+    } else {
+      shelljs.exec(
+        `docker container run --rm --user $(id -u):$(id -g) -v $(pwd):/app composer create-project --prefer-dist laravel/laravel ${projectName}`,
+        { silent: !flags.verbose }
+      );
+    }
 
     cli.ux.action.stop();
 
