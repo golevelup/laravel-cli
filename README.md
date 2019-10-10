@@ -9,7 +9,7 @@
 
 <!-- toc -->
 
-- [@badassery/laravel-up](#badasserylaravel-up)
+- [Laravel Up ⬆️](#laravel-up-️)
 - [Usage](#usage)
 - [Commands](#commands)
   <!-- tocstop -->
@@ -23,7 +23,7 @@ $ npm install -g @badassery/laravel-up
 $ lvl COMMAND
 running command...
 $ lvl (-v|--version|version)
-@badassery/laravel-up/0.0.8 linux-x64 node-v10.15.2
+@badassery/laravel-up/0.2.0 linux-x64 node-v10.13.0
 $ lvl --help [COMMAND]
 USAGE
   $ lvl COMMAND
@@ -39,10 +39,10 @@ USAGE
 - [`lvl artisan COMMAND`](#lvl-artisan-command)
 - [`lvl composer COMMAND`](#lvl-composer-command)
 - [`lvl configure`](#lvl-configure)
+- [`lvl down [DIRECTORY]`](#lvl-down-directory)
 - [`lvl help [COMMAND]`](#lvl-help-command)
 - [`lvl new`](#lvl-new)
 - [`lvl up [DIRECTORY]`](#lvl-up-directory)
-- [`lvl down [DIRECTORY]`](#lvl-down-directory)
 
 ## `lvl artisan COMMAND`
 
@@ -60,7 +60,7 @@ OPTIONS
   -s, --silent        Silent mode prevents artisan shell output
 ```
 
-_See code: [src/commands/artisan.ts](https://github.com/badassery/laravel-up/blob/v0.0.8/src/commands/artisan.ts)_
+_See code: [src/commands/artisan.ts](https://github.com/badassery/laravel-up/blob/v0.2.0/src/commands/artisan.ts)_
 
 ## `lvl composer COMMAND`
 
@@ -78,7 +78,7 @@ OPTIONS
   -s, --silent        Silent mode prevents Composer shell output
 ```
 
-_See code: [src/commands/composer.ts](https://github.com/badassery/laravel-up/blob/v0.0.8/src/commands/composer.ts)_
+_See code: [src/commands/composer.ts](https://github.com/badassery/laravel-up/blob/v0.2.0/src/commands/composer.ts)_
 
 ## `lvl configure`
 
@@ -92,7 +92,25 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/configure.ts](https://github.com/badassery/laravel-up/blob/v0.0.8/src/commands/configure.ts)_
+_See code: [src/commands/configure.ts](https://github.com/badassery/laravel-up/blob/v0.2.0/src/commands/configure.ts)_
+
+## `lvl down [DIRECTORY]`
+
+Stops a running Laravel Up project
+
+```
+USAGE
+  $ lvl down [DIRECTORY]
+
+ARGUMENTS
+  DIRECTORY  Running Laravel Up directory you would like to stop
+
+OPTIONS
+  -d, --destroy  To destroy Laravel up dev environment docker volumes
+  -v, --verbose  To have descriptive log process
+```
+
+_See code: [src/commands/down.ts](https://github.com/badassery/laravel-up/blob/v0.2.0/src/commands/down.ts)_
 
 ## `lvl help [COMMAND]`
 
@@ -123,7 +141,7 @@ OPTIONS
   -v, --verbose
 ```
 
-_See code: [src/commands/new.ts](https://github.com/badassery/laravel-up/blob/v0.0.8/src/commands/new.ts)_
+_See code: [src/commands/new.ts](https://github.com/badassery/laravel-up/blob/v0.2.0/src/commands/new.ts)_
 
 ## `lvl up [DIRECTORY]`
 
@@ -140,24 +158,6 @@ OPTIONS
   -v, --verbose
 ```
 
-_See code: [src/commands/up.ts](https://github.com/badassery/laravel-up/blob/v0.0.8/src/commands/up.ts)_
-
-## `lvl down [DIRECTORY] [OPTIONS,]`
-
-To Stop your local dev environment
-
-```
-USAGE
-  $ lvl down [DIRECTORY] [OPTIONS,]
-
-ARGUMENTS
-  DIRECTORY  Running Laravel Up directory you would like to stop
-
-OPTIONS
-  -v, --verbose
-  -d, --destroy To remove dev environment docker volumes
-```
-
-_See code: [src/commands/down.ts](https://github.com/badassery/laravel-up/blob/v0.0.8/src/commands/down.ts)_
+_See code: [src/commands/up.ts](https://github.com/badassery/laravel-up/blob/v0.2.0/src/commands/up.ts)_
 
 <!-- commandsstop -->

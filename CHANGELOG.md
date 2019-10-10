@@ -1,3 +1,13 @@
+# 0.2.0 (2019-10-10)
+
+### Bug Fixes
+
+- **app.dockerfile:** missing pdo_mysql extension installation ([225db31](https://github.com/badassery/laravel-up/commit/225db31)), closes [#22](https://github.com/badassery/laravel-up/issues/22)
+
+### Features
+
+- **commands/down.ts:** new option -d in down command to remove volumes ([d97263a](https://github.com/badassery/laravel-up/commit/d97263a)), closes [#8](https://github.com/badassery/laravel-up/issues/8)
+
 # 0.1.0 (2019-10-08)
 
 ### Features
