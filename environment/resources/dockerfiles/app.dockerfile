@@ -12,15 +12,7 @@ ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
 
 RUN docker-php-ext-install opcache
 
-# RUN docker-php-ext-install pdo_mysql
-
-# RUN apt-get update && apt-get install -y libpq-dev \
-#     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-#     && docker-php-ext-install pdo pdo_pgsql pgsql
-
-# DOCKER_DB_CONFIG_INJECT
-
-# COPY dev-env/supervisord.conf /etc/supervisord.conf
+RUN docker-php-ext-install pdo_mysql
 
 RUN if [ "$xdebug" = "true" ] ; then pecl install xdebug && docker-php-ext-enable xdebug ; else echo Running app without XDEBUG ; fi
 
