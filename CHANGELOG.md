@@ -1,3 +1,9 @@
+# [0.3.0](https://github.com/badassery/laravel-up/compare/v0.2.0...v0.3.0) (2019-10-10)
+
+### Features
+
+- **dockerfiles:** make docker images easy to deploy ([6492f1c](https://github.com/badassery/laravel-up/commit/6492f1c)), closes [#18](https://github.com/badassery/laravel-up/issues/18)
+
 # 0.2.0 (2019-10-10)
 
 ### Bug Fixes
