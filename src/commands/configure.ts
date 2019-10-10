@@ -9,6 +9,8 @@ import {
 } from "../actions";
 import * as shelljs from "shelljs";
 import chalk from "chalk";
+import Listr = require("listr");
+import { execAsync } from "../providers/execAsync";
 
 export default class Configure extends Command {
   static description =
@@ -44,28 +46,45 @@ export default class Configure extends Command {
       return;
     }
 
-    console.log(
-      chalk.yellow(
-        "This process will make changes to the file system of your project."
-      )
-    );
-    console.log(
-      chalk.yellow(
-        "It is highly recommended that you do this after committing or stashing all working changes so you can revert with git if needed."
-      )
+    const gitCheck = new Listr(
+      [
+        {
+          title: "Checking Git status...",
+          task: async (ctx, task) => {
+            const { stdout } = await execAsync(
+              ["git", "status", "--porcelain"].join(" "),
+              {
+                silent: true
+              }
+            );
+            if (stdout.trim() !== "") {
+              throw new Error(
+                "Unclean working tree. Commit or stash changes first."
+              );
+            }
+            task.title = "Checked git status";
+          }
+        },
+        {
+          title: "Checking Git remote history...",
+          task: async (ctx, task) => {
+            const { stdout } = await execAsync(
+              ["git", "rev-list", "--count", "--left-only", "@{u}...HEAD"].join(
+                " "
+              ),
+              { silent: true }
+            );
+            if (stdout.trim() !== "0") {
+              throw new Error("Remote history differ. Please pull changes.");
+            }
+            task.title = "Checked remote history";
+          }
+        }
+      ],
+      { concurrent: true }
     );
 
-    const areYouSure = await inquirer.prompt([
-      {
-        message: "Are you sure you would like to do this?",
-        name: "confirm",
-        type: "confirm"
-      }
-    ]);
-
-    if (areYouSure.confirm !== true) {
-      return;
-    }
+    await gitCheck.run();
 
     const envConfig = await promptEnvironment();
 
