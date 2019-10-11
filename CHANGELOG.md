@@ -1,3 +1,9 @@
+# [0.4.0](https://github.com/badassery/laravel-up/compare/v0.3.0...v0.4.0) (2019-10-11)
+
+### Features
+
+- **commands/configure:** git tree check on `lvl configure` ([743d0c7](https://github.com/badassery/laravel-up/commit/743d0c7)), closes [#15](https://github.com/badassery/laravel-up/issues/15)
+
 # [0.3.0](https://github.com/badassery/laravel-up/compare/v0.2.0...v0.3.0) (2019-10-10)
 
 ### Features
