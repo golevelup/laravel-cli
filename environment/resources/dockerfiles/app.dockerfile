@@ -1,6 +1,7 @@
 FROM php:7.3.6-fpm-stretch
 
 ARG xdebug=false
+ARG tinker=false
 
 WORKDIR /var/www
 
@@ -37,4 +38,5 @@ COPY environment/config/fpm/*.conf /usr/local/etc/php-fpm.d/
 RUN chmod -R 777 /var/www/storage
 RUN chmod -R 777 /var/www/bootstrap
 
+RUN if [ "$tinker" = "true" ] ; then mkdir -p /.config && chmod -R 777 /.config ; else echo Running app without Tinker support ; fi
 
