@@ -1,36 +1,37 @@
-import { Command, flags } from "@oclif/command";
+import { flags } from "@oclif/command";
 import chalk from "chalk";
+import * as ip from "ip";
+import Listr from "listr";
 import * as shelljs from "shelljs";
 import {
-  testTargetDirectory,
+  configureXdebug,
   displayCommandHeader,
-  configureXdebug
+  testTargetDirectory
 } from "../actions";
-import Listr from "listr";
-import * as ip from "ip";
+import { VERBOSE_DESCRIPTION } from "../constants";
+import TargetDirectoryCommand from "./target-directory-command";
 
-export default class Up extends Command {
-  static description = "Spins Up your local dev environment";
+export default class Up extends TargetDirectoryCommand {
+  static description = "Starts a Laravel Up environment";
 
   static flags = {
-    verbose: flags.boolean({ char: "v", default: false })
+    verbose: flags.boolean({
+      char: "v",
+      default: false,
+      description: VERBOSE_DESCRIPTION
+    })
   };
 
-  static args = [
-    {
-      name: "directory",
-      description: "The Laravel Up directory you would like to launch"
-    }
-  ];
+  static args = TargetDirectoryCommand.combineArgs([]);
 
   async run() {
     const { args, flags } = this.parse(Up);
 
     displayCommandHeader("Preparing to launch your project...");
 
-    const directory = args.directory
-      ? args.directory
-      : shelljs.pwd().toString();
+    const directory = this.targetDirectory
+      ? this.targetDirectory
+      : this.currentDirectory;
 
     if (!testTargetDirectory(directory)) {
       return false;

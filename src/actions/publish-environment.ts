@@ -1,13 +1,13 @@
-import * as path from "path";
-import * as jsyaml from "js-yaml";
-import * as shelljs from "shelljs";
 import * as envfile from "envfile";
 import * as fs from "fs";
-import { readFileAsync, writeFileAsync, PromptEnvironmentDef } from ".";
+import * as jsyaml from "js-yaml";
+import * as path from "path";
+import * as shelljs from "shelljs";
+import { PromptEnvironmentDef, readFileAsync, writeFileAsync } from ".";
 import { POSTGRES } from "../constants";
 import {
-  makeMySqlService,
   DbServiceConfig,
+  makeMySqlService,
   makePostgresService
 } from "../services";
 
@@ -51,6 +51,7 @@ export const publishEnvironment = async (
   shelljs.cd(location);
 
   const fullProjectPath = shelljs.pwd().toString();
+
   const destDockerComposePath = path.join(
     fullProjectPath,
     "docker-compose.yml"
@@ -59,10 +60,10 @@ export const publishEnvironment = async (
   shelljs.cp("-R", sourceEnvPath, "./environment");
   await writeFileAsync(destDockerComposePath, jsyaml.dump(composeYaml));
 
-  const envExamplePath = path.join(location, ".env.example");
+  const envExamplePath = path.join(fullProjectPath, ".env.example");
   const envExampleFileContents = envfile.parseFileSync(envExamplePath);
 
-  const envPath = path.join(location, ".env");
+  const envPath = path.join(fullProjectPath, ".env");
   if (!fs.existsSync(envPath)) {
     shelljs.cp(envExamplePath, envPath);
   }

@@ -1,7 +1,7 @@
-import { Command, flags } from "@oclif/command";
+import { flags } from "@oclif/command";
 import chalk from "chalk";
 import * as inquirer from "inquirer";
-import * as shelljs from "shelljs";
+import Listr from "listr";
 import {
   displayCommandHeader,
   promptEnvironment,
@@ -9,9 +9,9 @@ import {
   testTargetDirectory
 } from "../actions";
 import { execAsync } from "../providers/execAsync";
-import Listr = require("listr");
+import TargetDirectoryCommand from "./target-directory-command";
 
-export default class Configure extends Command {
+export default class Configure extends TargetDirectoryCommand {
   static description =
     "Configures an existing vanilla Laravel app as an Up project";
 
@@ -19,28 +19,32 @@ export default class Configure extends Command {
     help: flags.help({ char: "h" })
   };
 
-  static args = [];
+  static args = TargetDirectoryCommand.combineArgs([]);
 
   async run() {
-    const pwd = shelljs.pwd().toString();
+    const { args } = this.parse(Configure);
 
     displayCommandHeader(
       "This will guide you through configuration of an existing vanilla Laravel application to be used as an Up project"
     );
 
-    const mainPrompt = await inquirer.prompt([
-      {
-        default: pwd,
-        name: "location",
-        message:
-          "Where is the Laravel app you would like to configure? (Defaults to current directory)",
-        type: "input"
-      }
-    ]);
+    let directory = args.directory;
 
-    const { location } = mainPrompt;
+    if (!directory) {
+      const mainPrompt = await inquirer.prompt([
+        {
+          default: this.currentDirectory,
+          name: "directory",
+          message:
+            "Where is the Laravel app you would like to configure? (Defaults to current directory)",
+          type: "input"
+        }
+      ]);
 
-    if (!testTargetDirectory(location)) {
+      directory = mainPrompt.directory;
+    }
+
+    if (!testTargetDirectory(directory)) {
       return;
     }
 
@@ -48,6 +52,20 @@ export default class Configure extends Command {
       [
         {
           title: "Checking Git for uncommitted changes...",
+          skip: async () => {
+            try {
+              const { stdout } = await execAsync(
+                "git rev-parse --is-inside-work-tree",
+                {
+                  silent: true
+                }
+              );
+              return false;
+            } catch (e) {
+              // TODO: Listr types for skip() aren't quite right so this needs to be cast
+              return "Directory is not a Git repository" as any;
+            }
+          },
           task: async (ctx, task) => {
             const { stdout } = await execAsync(
               ["git", "status", "--porcelain"].join(" "),
@@ -74,7 +92,7 @@ export default class Configure extends Command {
 
     const envConfig = await promptEnvironment();
 
-    await publishEnvironment(location, envConfig);
+    await publishEnvironment(directory, envConfig);
 
     console.log(
       chalk.green("Your project is ready! Just run `lvl up` to start it")

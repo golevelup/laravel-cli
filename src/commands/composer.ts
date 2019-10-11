@@ -1,8 +1,9 @@
-import { Command, flags } from "@oclif/command";
+import { flags } from "@oclif/command";
 import * as shelljs from "shelljs";
+import BaseCommand from "./command-base";
 
-export default class Composer extends Command {
-  static description = "Executes a composer command";
+export default class Composer extends BaseCommand {
+  static description = "Executes a Composer command in the current directory";
 
   static strict = false;
 
@@ -10,11 +11,6 @@ export default class Composer extends Command {
     ["command-help"]: flags.boolean({
       char: "h",
       description: "Passes --help to the underlying composer command"
-    }),
-    silent: flags.boolean({
-      char: "s",
-      description: "Silent mode prevents Composer shell output",
-      default: false
     })
   };
 
@@ -22,8 +18,8 @@ export default class Composer extends Command {
     {
       name: "command",
       description:
-        "The command to pass to composer. Should be wrapped in quotes if passing flags",
-      required: true
+        "The command to pass to composer. Omit this to see available commands",
+      required: false
     }
   ];
 
@@ -32,13 +28,16 @@ export default class Composer extends Command {
 
     const combined = argv.join(" ");
 
-    let commandText = `docker container run --rm --user $(id -u):$(id -g) -v $(pwd):/app composer ${combined}`;
+    let commandText = `docker container run --rm ${
+      !this.config.windows ? "--user $(id -u):$(id -g)" : ""
+    } -v ${this.currentDirectory}:/app composer ${combined}`;
+
+    console.log(commandText);
+
     if (flags["command-help"]) {
       commandText = commandText = `${commandText} --help`;
     }
 
-    shelljs.exec(commandText, {
-      silent: flags.silent && !flags["command-help"]
-    });
+    shelljs.exec(commandText);
   }
 }
