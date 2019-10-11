@@ -7,15 +7,21 @@ import * as shelljs from "shelljs";
 import {
   displayCommandHeader,
   promptEnvironment,
-  publishEnvironment
+  publishEnvironment,
+  testTargetDirectory
 } from "../actions";
+import { VERBOSE_DESCRIPTION } from "./../constants";
 import BaseCommand from "./command-base";
 
 export default class New extends BaseCommand {
   static description = "Creates a new Laravel Up project";
 
   static flags = {
-    verbose: flags.boolean({ char: "v", default: false })
+    verbose: flags.boolean({
+      char: "v",
+      default: true,
+      description: VERBOSE_DESCRIPTION
+    })
   };
 
   static args = [];
@@ -29,50 +35,40 @@ export default class New extends BaseCommand {
 
     const mainPrompt = await inquirer.prompt([
       {
+        default: this.currentDirectory,
+        name: "directory",
+        message: "Where would you like to save your new project?",
+        type: "input"
+      },
+      {
         default: "hello-laravel-up",
         name: "projectName",
         message: "What is your project called?",
         type: "input"
-      },
-      {
-        default: this.currentDirectory,
-        name: "location",
-        message: "Where would you like to save your new project?",
-        type: "input"
       }
     ]);
 
-    const { projectName, location } = mainPrompt;
+    const { projectName, directory } = mainPrompt;
 
-    const testTargetDirectory = shelljs.cd(location).stderr;
-    if (testTargetDirectory) {
-      console.log(
-        chalk.red(`${location} is not a valid target project directory`)
-      );
-
-      return;
+    if (!testTargetDirectory(directory)) {
+      return false;
     }
 
     const dbPrompt = await promptEnvironment();
 
+    console.log();
     cli.ux.action.start("Creating your App!");
 
-    if (this.config.windows) {
-      // Omit the --user argument on Windows. It is not necessary
-      shelljs.exec(
-        `docker container run --rm -v ${this.currentDirectory}:/app composer create-project --prefer-dist laravel/laravel ${projectName}`,
-        { silent: !flags.verbose }
-      );
-    } else {
-      shelljs.exec(
-        `docker container run --rm --user $(id -u):$(id -g) -v $(pwd):/app composer create-project --prefer-dist laravel/laravel ${projectName}`,
-        { silent: !flags.verbose }
-      );
-    }
+    shelljs.exec(
+      `docker container run --rm ${
+        !this.config.windows ? "--user $(id -u):$(id -g)" : ""
+      } -v ${directory}:/app composer create-project --prefer-dist laravel/laravel ${projectName}`,
+      { silent: !flags.verbose }
+    );
 
     cli.ux.action.stop();
 
-    await publishEnvironment(path.join(location, projectName), dbPrompt);
+    await publishEnvironment(path.join(directory, projectName), dbPrompt);
 
     console.log(
       chalk.green("Your project is ready! Just run `lvl up` to start it")

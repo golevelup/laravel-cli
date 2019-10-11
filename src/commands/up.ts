@@ -12,7 +12,7 @@ import { VERBOSE_DESCRIPTION } from "../constants";
 import TargetDirectoryCommand from "./target-directory-command";
 
 export default class Up extends TargetDirectoryCommand {
-  static description = "Spins Up your local dev environment";
+  static description = "Starts a Laravel Up environment";
 
   static flags = {
     verbose: flags.boolean({

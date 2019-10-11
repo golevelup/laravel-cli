@@ -7,7 +7,7 @@ import { VERBOSE_DESCRIPTION } from "../constants";
 import TargetDirectoryCommand from "./target-directory-command";
 
 export default class Down extends TargetDirectoryCommand {
-  static description = "Stops a running Laravel Up project";
+  static description = "Stops a running Laravel Up environment";
 
   static flags = {
     verbose: flags.boolean({
