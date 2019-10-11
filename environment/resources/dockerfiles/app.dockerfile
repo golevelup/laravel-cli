@@ -14,7 +14,7 @@ ENV PHP_OPCACHE_VALIDATE_TIMESTAMPS="0" \
 
 RUN docker-php-ext-install opcache
 
-RUN docker-php-ext-install pdo_mysql
+# <DB_DRIVERS>
 
 # Conditionally install the necessary components to allow XDebug
 RUN if [ "$xdebug" = "true" ] ; then pecl install xdebug && docker-php-ext-enable xdebug ; else echo Running app without XDEBUG ; fi

@@ -1,5 +1,5 @@
 import * as inquirer from "inquirer";
-import { MYSQL } from "../constants";
+import { MYSQL, POSTGRES } from "../constants";
 
 type ThenArg<T> = T extends Promise<infer U> ? U : T;
 export type PromptEnvironmentDef = ThenArg<
@@ -21,6 +21,9 @@ export const promptEnvironment = async () => {
       choices: [
         {
           name: MYSQL
+        },
+        {
+          name: POSTGRES
         }
 
         // TODO: Bring these back
@@ -28,9 +31,6 @@ export const promptEnvironment = async () => {
         // {
         //   name: MARIA
         // },
-        // {
-        //   name: POSTGRES
-        // }
       ]
     },
     {
