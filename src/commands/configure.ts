@@ -1,16 +1,15 @@
 import { Command, flags } from "@oclif/command";
-import * as envfile from "envfile";
+import chalk from "chalk";
 import * as inquirer from "inquirer";
+import * as shelljs from "shelljs";
 import {
   displayCommandHeader,
   promptEnvironment,
-  testTargetDirectory,
-  publishEnvironment
+  publishEnvironment,
+  testTargetDirectory
 } from "../actions";
-import * as shelljs from "shelljs";
-import chalk from "chalk";
-import Listr = require("listr");
 import { execAsync } from "../providers/execAsync";
+import Listr = require("listr");
 
 export default class Configure extends Command {
   static description =
@@ -24,7 +23,6 @@ export default class Configure extends Command {
 
   async run() {
     const pwd = shelljs.pwd().toString();
-    // const pwd = "/home/jesse/code/laravel-tests/vanilla1";
 
     displayCommandHeader(
       "This will guide you through configuration of an existing vanilla Laravel application to be used as an Up project"
@@ -49,7 +47,7 @@ export default class Configure extends Command {
     const gitCheck = new Listr(
       [
         {
-          title: "Checking Git status...",
+          title: "Checking Git for uncommitted changes...",
           task: async (ctx, task) => {
             const { stdout } = await execAsync(
               ["git", "status", "--porcelain"].join(" "),
@@ -59,32 +57,20 @@ export default class Configure extends Command {
             );
             if (stdout.trim() !== "") {
               throw new Error(
-                "Unclean working tree. Commit or stash changes first."
+                "Commit or stash your working changes first so you can properly review the modifications made by Laravel Up."
               );
             }
-            task.title = "Checked git status";
-          }
-        },
-        {
-          title: "Checking Git remote history...",
-          task: async (ctx, task) => {
-            const { stdout } = await execAsync(
-              ["git", "rev-list", "--count", "--left-only", "@{u}...HEAD"].join(
-                " "
-              ),
-              { silent: true }
-            );
-            if (stdout.trim() !== "0") {
-              throw new Error("Remote history differ. Please pull changes.");
-            }
-            task.title = "Checked remote history";
           }
         }
       ],
       { concurrent: true }
     );
 
-    await gitCheck.run();
+    try {
+      await gitCheck.run();
+    } catch (e) {
+      return;
+    }
 
     const envConfig = await promptEnvironment();
 
