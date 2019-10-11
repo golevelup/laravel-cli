@@ -19,3 +19,14 @@ export const testTargetDirectory = (candidateDir: string) => {
 
   return true;
 };
+
+export const replaceFileContent = async (
+  filePath: string,
+  replaceArgs: string[]
+) => {
+  const fileContent = await readFileAsync(filePath);
+  const newContent = fileContent
+    .toString()
+    .replace(replaceArgs[0], replaceArgs[1]);
+  await writeFileAsync(filePath, newContent);
+};

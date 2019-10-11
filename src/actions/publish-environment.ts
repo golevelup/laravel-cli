@@ -10,6 +10,7 @@ import {
   makeMySqlService,
   makePostgresService
 } from "../services";
+import { mysqlDriverInstall, pSqlDriverInstall } from "./dockerfile-config";
 
 export const publishEnvironment = async (
   location: string,
@@ -20,6 +21,17 @@ export const publishEnvironment = async (
   const sourceEnvPath = path.join(baseEnvPath, "resources");
 
   const dockerComposeContents = await readFileAsync(srcDockerComposePath);
+
+  shelljs.cd(location);
+
+  const fullProjectPath = shelljs.pwd().toString();
+
+  const destDockerComposePath = path.join(
+    fullProjectPath,
+    "docker-compose.yml"
+  );
+
+  shelljs.cp("-R", sourceEnvPath, "./environment");
 
   let composeYaml = jsyaml.load(dockerComposeContents.toString());
 
@@ -33,9 +45,11 @@ export const publishEnvironment = async (
   switch (envConfig.engine) {
     case POSTGRES:
       dbService = makePostgresService(dbConfig);
+      await pSqlDriverInstall(location);
       break;
     default:
       dbService = makeMySqlService(dbConfig);
+      await mysqlDriverInstall(location);
       break;
   }
 
@@ -48,16 +62,6 @@ export const publishEnvironment = async (
     services: { ...composeYaml.services, database: dbService }
   };
 
-  shelljs.cd(location);
-
-  const fullProjectPath = shelljs.pwd().toString();
-
-  const destDockerComposePath = path.join(
-    fullProjectPath,
-    "docker-compose.yml"
-  );
-
-  shelljs.cp("-R", sourceEnvPath, "./environment");
   await writeFileAsync(destDockerComposePath, jsyaml.dump(composeYaml));
 
   const envExamplePath = path.join(fullProjectPath, ".env.example");

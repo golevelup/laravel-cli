@@ -32,8 +32,6 @@ export default class Composer extends BaseCommand {
       !this.config.windows ? "--user $(id -u):$(id -g)" : ""
     } -v ${this.currentDirectory}:/app composer ${combined}`;
 
-    console.log(commandText);
-
     if (flags["command-help"]) {
       commandText = commandText = `${commandText} --help`;
     }
