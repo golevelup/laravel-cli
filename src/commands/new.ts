@@ -1,16 +1,17 @@
-import { Command, flags } from "@oclif/command";
+import { flags } from "@oclif/command";
 import chalk from "chalk";
 import * as cli from "cli-ux";
 import * as inquirer from "inquirer";
 import * as path from "path";
 import * as shelljs from "shelljs";
 import {
-  promptEnvironment,
   displayCommandHeader,
+  promptEnvironment,
   publishEnvironment
 } from "../actions";
+import BaseCommand from "./command-base";
 
-export default class New extends Command {
+export default class New extends BaseCommand {
   static description = "Creates a new Laravel Up project";
 
   static flags = {
@@ -26,8 +27,6 @@ export default class New extends Command {
       "This will guide you through the configuration and scaffolding of a brand new Laravel Up project"
     );
 
-    const pwd = shelljs.pwd().toString();
-
     const mainPrompt = await inquirer.prompt([
       {
         default: "hello-laravel-up",
@@ -36,7 +35,7 @@ export default class New extends Command {
         type: "input"
       },
       {
-        default: pwd,
+        default: this.currentDirectory,
         name: "location",
         message: "Where would you like to save your new project?",
         type: "input"
@@ -59,12 +58,9 @@ export default class New extends Command {
     cli.ux.action.start("Creating your App!");
 
     if (this.config.windows) {
-      // We need to interpolate this value in JS since we can't in cmd.exe
-      const currentDir = shelljs.pwd();
-
       // Omit the --user argument on Windows. It is not necessary
       shelljs.exec(
-        `docker container run --rm -v ${currentDir}:/app composer create-project --prefer-dist laravel/laravel ${projectName}`,
+        `docker container run --rm -v ${this.currentDirectory}:/app composer create-project --prefer-dist laravel/laravel ${projectName}`,
         { silent: !flags.verbose }
       );
     } else {

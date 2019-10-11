@@ -1,7 +1,8 @@
-import { Command, flags } from "@oclif/command";
+import { flags } from "@oclif/command";
 import * as shelljs from "shelljs";
+import BaseCommand from "./command-base";
 
-export default class Artisan extends Command {
+export default class Artisan extends BaseCommand {
   static description = "Runs an artisan command (eg make:controller {name})";
 
   static strict = false;
@@ -22,12 +23,14 @@ export default class Artisan extends Command {
     {
       name: "command",
       description: "The command to pass to artisan",
-      required: true
+      required: false
     }
   ];
 
   async run() {
     const { argv, flags } = this.parse(Artisan);
+
+    shelljs.cd("~/code/givelify/portal-api");
 
     const combined = argv.join(" ");
 
