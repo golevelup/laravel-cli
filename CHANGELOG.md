@@ -1,3 +1,10 @@
+# [0.5.0](https://github.com/badassery/laravel-up/compare/v0.4.0...v0.5.0) (2019-10-11)
+
+### Features
+
+- **app.dockerfile:** adds support for running artisan tinker ([d056aa5](https://github.com/badassery/laravel-up/commit/d056aa5)), closes [#28](https://github.com/badassery/laravel-up/issues/28)
+- **databases:** added support for postgres ([94c259a](https://github.com/badassery/laravel-up/commit/94c259a)), closes [#12](https://github.com/badassery/laravel-up/issues/12)
+
 # [0.4.0](https://github.com/badassery/laravel-up/compare/v0.3.0...v0.4.0) (2019-10-11)
 
 ### Features
