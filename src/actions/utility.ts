@@ -1,21 +1,25 @@
-import { promisify } from "util";
+import chalk from "chalk";
 import * as fs from "fs";
 import * as shelljs from "shelljs";
-import chalk from "chalk";
+import { promisify } from "util";
 
 export const readFileAsync = promisify(fs.readFile);
 export const writeFileAsync = promisify(fs.writeFile);
 
-export const testTargetDirectory = (candidateDir: string) => {
-  const hasDirError = shelljs.cd(candidateDir).stderr;
+export const shellWhitespace = console.log;
 
-  if (hasDirError) {
-    console.log(
-      chalk.red(`${location} is not a valid target project directory`)
-    );
-
+export const tryChangeDirectory = (candidateDir: string, printError = true) => {
+  const verifyPath = shelljs.exec(`cd ${candidateDir}`, { silent: true });
+  if (verifyPath.stderr) {
+    if (printError) {
+      console.log(
+        chalk.red(`\n${candidateDir} is not a valid project directory`)
+      );
+    }
     return false;
   }
+
+  shelljs.cd(candidateDir);
 
   return true;
 };
