@@ -1,6 +1,7 @@
 {
   "name": "@badassery/laravel-up",
   "version": "0.5.1",
+  "description": "A delightful CLI for Docker based Laravel developer environments and the cloud",
   "author": "Jesse Carter @WonderPanda",
   "private": false,
   "access": "public",
