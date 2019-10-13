@@ -8,7 +8,7 @@ import {
   displayCommandHeader,
   promptEnvironment,
   publishEnvironment,
-  testTargetDirectory
+  tryChangeDirectory
 } from "../actions";
 import { VERBOSE_DESCRIPTION } from "./../constants";
 import BaseCommand from "./command-base";
@@ -50,7 +50,7 @@ export default class New extends BaseCommand {
 
     const { projectName, directory } = mainPrompt;
 
-    if (!testTargetDirectory(directory)) {
+    if (!tryChangeDirectory(directory)) {
       return false;
     }
 

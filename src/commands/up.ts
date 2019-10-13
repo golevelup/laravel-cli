@@ -3,11 +3,11 @@ import chalk from "chalk";
 import * as ip from "ip";
 import Listr from "listr";
 import * as shelljs from "shelljs";
-import {
-  configureXdebug,
-  displayCommandHeader,
-  testTargetDirectory
-} from "../actions";
+import { configureXdebug, displayCommandHeader } from "../actions";
+import verifyLaravelProject, {
+  getExtendedIncompatibilityMessage,
+  isLaravelUpProject
+} from "../actions/verify-laravel-project-directory";
 import { VERBOSE_DESCRIPTION } from "../constants";
 import TargetDirectoryCommand from "./target-directory-command";
 
@@ -29,15 +29,18 @@ export default class Up extends TargetDirectoryCommand {
 
     displayCommandHeader("Preparing to launch your project...");
 
-    const directory = this.targetDirectory
+    const projectConfig = this.targetDirectory
       ? this.targetDirectory
       : this.currentDirectory;
 
-    if (!testTargetDirectory(directory)) {
-      return false;
+    const result = await verifyLaravelProject(projectConfig);
+
+    if (!isLaravelUpProject(result)) {
+      console.log(chalk.red(getExtendedIncompatibilityMessage(result)));
+      return;
     }
 
-    shelljs.cd(directory);
+    shelljs.cd(projectConfig);
 
     const xdebugIp = ip.address();
 
@@ -49,7 +52,7 @@ export default class Up extends TargetDirectoryCommand {
       // },
       {
         title: `Setting XDebug Remote Host to ${xdebugIp}`,
-        task: () => configureXdebug(directory, xdebugIp)
+        task: () => configureXdebug(projectConfig, xdebugIp)
       },
       {
         title: "Starting Docker Services",
@@ -82,7 +85,9 @@ export default class Up extends TargetDirectoryCommand {
     }
 
     console.log(
-      chalk.green("\nYour app is now available at http://localhost:8080")
+      chalk.green(
+        `\nYour app is now available at http://localhost:${result.app.port}`
+      )
     );
   }
 }
