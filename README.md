@@ -1,6 +1,6 @@
 # Laravel Up ⬆️
 
-## A Delightful Developer Environment and CLI for the Laravel Framework
+## A delightful CLI for Docker based Laravel developer environments and the cloud
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/@badassery/laravel-up.svg)](https://npmjs.org/package/@badassery/laravel-up)
@@ -23,7 +23,7 @@ $ npm install -g @badassery/laravel-up
 $ lvl COMMAND
 running command...
 $ lvl (-v|--version|version)
-@badassery/laravel-up/0.5.0 linux-x64 node-v10.15.2
+@badassery/laravel-up/0.5.1 linux-x64 node-v10.15.3
 $ lvl --help [COMMAND]
 USAGE
   $ lvl COMMAND
@@ -61,7 +61,7 @@ OPTIONS
   -h, --command-help  Passes --help to the underlying artisan command
 ```
 
-_See code: [src/commands/artisan.ts](https://github.com/badassery/laravel-up/blob/v0.5.0/src/commands/artisan.ts)_
+_See code: [src/commands/artisan.ts](https://github.com/badassery/laravel-up/blob/v0.5.1/src/commands/artisan.ts)_
 
 ## `lvl command-base`
 
@@ -70,7 +70,7 @@ USAGE
   $ lvl command-base
 ```
 
-_See code: [src/commands/command-base.ts](https://github.com/badassery/laravel-up/blob/v0.5.0/src/commands/command-base.ts)_
+_See code: [src/commands/command-base.ts](https://github.com/badassery/laravel-up/blob/v0.5.1/src/commands/command-base.ts)_
 
 ## `lvl composer [COMMAND]`
 
@@ -87,7 +87,7 @@ OPTIONS
   -h, --command-help  Passes --help to the underlying composer command
 ```
 
-_See code: [src/commands/composer.ts](https://github.com/badassery/laravel-up/blob/v0.5.0/src/commands/composer.ts)_
+_See code: [src/commands/composer.ts](https://github.com/badassery/laravel-up/blob/v0.5.1/src/commands/composer.ts)_
 
 ## `lvl configure [DIRECTORY]`
 
@@ -104,7 +104,7 @@ OPTIONS
   -h, --help  show CLI help
 ```
 
-_See code: [src/commands/configure.ts](https://github.com/badassery/laravel-up/blob/v0.5.0/src/commands/configure.ts)_
+_See code: [src/commands/configure.ts](https://github.com/badassery/laravel-up/blob/v0.5.1/src/commands/configure.ts)_
 
 ## `lvl down [DIRECTORY]`
 
@@ -122,7 +122,7 @@ OPTIONS
   -v, --verbose  Include additional diagnostic logs
 ```
 
-_See code: [src/commands/down.ts](https://github.com/badassery/laravel-up/blob/v0.5.0/src/commands/down.ts)_
+_See code: [src/commands/down.ts](https://github.com/badassery/laravel-up/blob/v0.5.1/src/commands/down.ts)_
 
 ## `lvl help [COMMAND]`
 
@@ -153,7 +153,7 @@ OPTIONS
   -v, --verbose  Include additional diagnostic logs
 ```
 
-_See code: [src/commands/new.ts](https://github.com/badassery/laravel-up/blob/v0.5.0/src/commands/new.ts)_
+_See code: [src/commands/new.ts](https://github.com/badassery/laravel-up/blob/v0.5.1/src/commands/new.ts)_
 
 ## `lvl target-directory-command`
 
@@ -162,7 +162,7 @@ USAGE
   $ lvl target-directory-command
 ```
 
-_See code: [src/commands/target-directory-command.ts](https://github.com/badassery/laravel-up/blob/v0.5.0/src/commands/target-directory-command.ts)_
+_See code: [src/commands/target-directory-command.ts](https://github.com/badassery/laravel-up/blob/v0.5.1/src/commands/target-directory-command.ts)_
 
 ## `lvl up [DIRECTORY]`
 
@@ -179,6 +179,6 @@ OPTIONS
   -v, --verbose  Include additional diagnostic logs
 ```
 
-_See code: [src/commands/up.ts](https://github.com/badassery/laravel-up/blob/v0.5.0/src/commands/up.ts)_
+_See code: [src/commands/up.ts](https://github.com/badassery/laravel-up/blob/v0.5.1/src/commands/up.ts)_
 
 <!-- commandsstop -->
