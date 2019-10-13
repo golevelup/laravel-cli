@@ -20,6 +20,8 @@ services:
     build:
       context: ./
       dockerfile: environment/dockerfiles/web.dockerfile
+    environment:
+      - FAST_CGI_HOST=app
     volumes:
       - ./:/var/www:delegated
     ports:
