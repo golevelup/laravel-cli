@@ -1,3 +1,11 @@
+## [0.5.1](https://github.com/badassery/laravel-up/compare/v0.5.0...v0.5.1) (2019-10-13)
+
+### Bug Fixes
+
+- **docker-compose:** corrects formatting of volume key in docker-compose ([0c241d1](https://github.com/badassery/laravel-up/commit/0c241d1)), closes [#32](https://github.com/badassery/laravel-up/issues/32)
+- **docker-compose:** pass FAST_CGI_HOST var to NGINX web service ([08fe362](https://github.com/badassery/laravel-up/commit/08fe362)), closes [#34](https://github.com/badassery/laravel-up/issues/34)
+- **postgres:** fixes postgres service configuration issues ([b70398c](https://github.com/badassery/laravel-up/commit/b70398c)), closes [#33](https://github.com/badassery/laravel-up/issues/33)
+
 # [0.5.0](https://github.com/badassery/laravel-up/compare/v0.4.0...v0.5.0) (2019-10-11)
 
 ### Features
