@@ -77,7 +77,9 @@ export const publishEnvironment = async (
     ["DB_HOST", "database"],
     ["DB_USERNAME", "root"],
     ["DB_PASSWORD", envConfig.dbRootPassword],
-    ["DB_DATABASE", envConfig.dbName]
+    ["DB_DATABASE", envConfig.dbName],
+    ["DB_CONNECTION", envConfig.engine === POSTGRES ? "pgsql" : "mysql"],
+    ["DB_PORT", envConfig.engine === POSTGRES ? 5432 : 3306]
   ];
 
   envOverrides.forEach(([key, value]) => {
