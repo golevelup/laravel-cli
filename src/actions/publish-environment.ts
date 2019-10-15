@@ -1,5 +1,5 @@
 import * as envfile from "envfile";
-import * as fs from "fs";
+import * as fs from "fs-extra";
 import * as jsyaml from "js-yaml";
 import * as path from "path";
 import * as shelljs from "shelljs";
@@ -21,7 +21,6 @@ export const publishEnvironment = async (
   const sourceEnvPath = path.join(baseEnvPath, "resources");
 
   const dockerComposeContents = await readFileAsync(srcDockerComposePath);
-
   shelljs.cd(location);
 
   const fullProjectPath = shelljs.pwd().toString();
@@ -31,7 +30,10 @@ export const publishEnvironment = async (
     "docker-compose.yml"
   );
 
-  shelljs.cp("-R", sourceEnvPath, "./environment");
+  await fs.copy(sourceEnvPath, path.join(fullProjectPath, "environment"), {
+    overwrite: true,
+    recursive: true
+  });
 
   let composeYaml = jsyaml.load(dockerComposeContents.toString());
 
