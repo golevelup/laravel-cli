@@ -1,5 +1,5 @@
 {
-  "name": "@badassery/laravel-up",
+  "name": "@levelup-laravel/cli",
   "version": "0.5.1",
   "description": "A delightful CLI for Docker based Laravel developer environments and the cloud",
   "author": "Jesse Carter @WonderPanda",
@@ -8,7 +8,7 @@
   "bin": {
     "lvl": "./bin/run"
   },
-  "bugs": "https://github.com/badassery/laravel-up/issues",
+  "bugs": "https://github.com/golevelup/laravel-cli/issues",
   "dependencies": {
     "@oclif/command": "^1",
     "@oclif/config": "^1",
@@ -73,7 +73,7 @@
     "/npm-shrinkwrap.json",
     "/oclif.manifest.json"
   ],
-  "homepage": "https://github.com/badassery/laravel-up",
+  "homepage": "https://github.com/golevelup/laravel-cli",
   "keywords": [
     "oclif",
     "laravel",
@@ -89,7 +89,7 @@
       "@oclif/plugin-help"
     ]
   },
-  "repository": "badassery/laravel-up",
+  "repository": "golevelup/laravel-cli",
   "scripts": {
     "commit": "yarn run git-cz",
     "postpack": "rm -f oclif.manifest.json",
