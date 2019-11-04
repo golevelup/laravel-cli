@@ -11,6 +11,7 @@ import {
   makePostgresService
 } from "../services";
 import { mysqlDriverInstall, pSqlDriverInstall } from "./dockerfile-config";
+import { UpEnvironmentConfig } from "../types";
 
 export const publishEnvironment = async (
   location: string,
@@ -93,5 +94,22 @@ export const publishEnvironment = async (
   fs.writeFileSync(
     envExamplePath,
     envfile.stringifySync(envExampleFileContents)
+  );
+
+  const environmentConfig: UpEnvironmentConfig = {
+    app: {
+      port: envConfig.webPort
+    },
+    database: {
+      engine: envConfig.engine,
+      name: envConfig.dbName,
+      password: envConfig.dbRootPassword,
+      port: envConfig.dbHostPort
+    }
+  };
+
+  await writeFileAsync(
+    path.join(fullProjectPath, "laravel-up.yml"),
+    jsyaml.dump(environmentConfig)
   );
 };

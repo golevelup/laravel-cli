@@ -6,7 +6,7 @@ import {
   displayCommandHeader,
   promptEnvironment,
   publishEnvironment,
-  testTargetDirectory
+  tryChangeDirectory
 } from "../actions";
 import { execAsync } from "../providers/execAsync";
 import TargetDirectoryCommand from "./target-directory-command";
@@ -44,7 +44,7 @@ export default class Configure extends TargetDirectoryCommand {
       directory = mainPrompt.directory;
     }
 
-    if (!testTargetDirectory(directory)) {
+    if (!tryChangeDirectory(directory)) {
       return;
     }
 

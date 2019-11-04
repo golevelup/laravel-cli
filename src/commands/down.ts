@@ -2,7 +2,7 @@ import { flags } from "@oclif/command";
 import chalk from "chalk";
 import * as inquirer from "inquirer";
 import * as shelljs from "shelljs";
-import { displayCommandHeader, testTargetDirectory } from "../actions";
+import { displayCommandHeader, tryChangeDirectory } from "../actions";
 import { VERBOSE_DESCRIPTION } from "../constants";
 import TargetDirectoryCommand from "./target-directory-command";
 
@@ -33,7 +33,7 @@ export default class Down extends TargetDirectoryCommand {
       ? this.targetDirectory
       : this.currentDirectory;
 
-    if (!testTargetDirectory(directory)) {
+    if (!tryChangeDirectory(directory)) {
       return false;
     }
 
