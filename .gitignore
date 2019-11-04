@@ -7,3 +7,8 @@
 /tmp
 node_modules
 oclif.manifest.json
+
+# Don't commit Laravel Up Files related to the test app
+test/test-app/environment
+test/test-app/docker-compose.yml
+test/test-app/.env.example
