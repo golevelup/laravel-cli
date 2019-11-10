@@ -1,11 +1,17 @@
-# Laravel Up ⬆️
+<span align="center">
 
-## A delightful CLI for Docker based Laravel developer environments and the cloud
+<p align="center">
+    <image width="70%" src="go-level-up-logo-3-no-padding.svg">
+</p>
+
+### A delightful CLI for Docker based Laravel developer environments and the cloud
 
 [![oclif](https://img.shields.io/badge/cli-oclif-brightgreen.svg)](https://oclif.io)
 [![Version](https://img.shields.io/npm/v/@badassery/laravel-up.svg)](https://npmjs.org/package/@badassery/laravel-up)
 [![Downloads/week](https://img.shields.io/npm/dw/@badassery/laravel-up.svg)](https://npmjs.org/package/@badassery/laravel-up)
 [![License](https://img.shields.io/npm/l/@badassery/laravel-up.svg)](https://github.com/badassery/laravel-up/blob/master/package.json)
+
+</span>
 
 # Motivation
 
