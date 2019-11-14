@@ -12,9 +12,7 @@ services:
     volumes:
       - ./:/var/www:delegated
     env_file:
-      - environment/docker.env
-    ports:
-      - 9000:9000
+      - environment/.docker.env
 
   web:
     build:
