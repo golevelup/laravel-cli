@@ -4,7 +4,7 @@ import * as jsyaml from "js-yaml";
 import * as path from "path";
 import * as shelljs from "shelljs";
 import { PromptEnvironmentDef, readFileAsync, writeFileAsync } from ".";
-import { POSTGRES } from "../constants";
+import { POSTGRES, LARAVEL } from "../constants";
 import {
   DbServiceConfig,
   makeMySqlService,
@@ -12,6 +12,7 @@ import {
 } from "../services";
 import { mysqlDriverInstall, pSqlDriverInstall } from "./dockerfile-config";
 import { UpEnvironmentConfig } from "../types";
+import { resolvePath } from "./utility";
 
 export const publishEnvironment = async (
   location: string,
@@ -22,7 +23,10 @@ export const publishEnvironment = async (
   const sourceEnvPath = path.join(baseEnvPath, "resources");
 
   const dockerComposeContents = await readFileAsync(srcDockerComposePath);
-  shelljs.cd(location);
+
+  const realLocation = resolvePath(location);
+
+  shelljs.cd(realLocation);
 
   const fullProjectPath = shelljs.pwd().toString();
 
@@ -48,12 +52,18 @@ export const publishEnvironment = async (
   switch (envConfig.engine) {
     case POSTGRES:
       dbService = makePostgresService(dbConfig);
-      await pSqlDriverInstall(location);
+      await pSqlDriverInstall(realLocation, envConfig.projectType);
       break;
     default:
       dbService = makeMySqlService(dbConfig);
-      await mysqlDriverInstall(location);
+      await mysqlDriverInstall(realLocation, envConfig.projectType);
       break;
+  }
+
+  if (envConfig.projectType !== LARAVEL) {
+    composeYaml["services"]["app"]["build"][
+      "dockerfile"
+    ] = `environment/dockerfiles/${envConfig.projectType}.dockerfile`;
   }
 
   if (envConfig.webPort != 8080) {

@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import * as fs from "fs";
 import * as shelljs from "shelljs";
+import * as os from "os";
 import { promisify } from "util";
 
 export const readFileAsync = promisify(fs.readFile);
@@ -33,4 +34,15 @@ export const replaceFileContent = async (
     .toString()
     .replace(replaceArgs[0], replaceArgs[1]);
   await writeFileAsync(filePath, newContent);
+};
+
+/**
+ * From https://stackoverflow.com/a/57243075/717643
+ */
+export const resolvePath = (filePath: string) => {
+  // '~/folder/path' or '~'
+  if (filePath[0] === "~" && (filePath[1] === "/" || filePath.length === 1)) {
+    return filePath.replace("~", os.homedir());
+  }
+  return filePath;
 };

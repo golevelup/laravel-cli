@@ -2,10 +2,15 @@ import { replaceFileContent } from "./utility";
 import { join } from "path";
 import { DB_DRIVER_REPLACE_STRING } from "../constants";
 
-export const pSqlDriverInstall = async (projectPath: string) => {
+type ProjectType = "lumen" | "laravel";
+
+export const pSqlDriverInstall = async (
+  projectPath: string,
+  projectType: ProjectType
+) => {
   const srcAppDockerFile = join(
     projectPath,
-    "environment/dockerfiles/app.dockerfile"
+    `environment/dockerfiles/${projectType}.dockerfile`
   );
   const replaceArgs = [
     DB_DRIVER_REPLACE_STRING,
@@ -18,10 +23,13 @@ export const pSqlDriverInstall = async (projectPath: string) => {
   await replaceFileContent(srcAppDockerFile, replaceArgs);
 };
 
-export const mysqlDriverInstall = async (projectPath: string) => {
+export const mysqlDriverInstall = async (
+  projectPath: string,
+  projectType: ProjectType
+) => {
   const srcAppDockerFile = join(
     projectPath,
-    "environment/dockerfiles/app.dockerfile"
+    `environment/dockerfiles/${projectType}.dockerfile`
   );
   const replaceArgs = [
     DB_DRIVER_REPLACE_STRING,

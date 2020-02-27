@@ -62,7 +62,9 @@ export default class New extends BaseCommand {
     shelljs.exec(
       `docker container run --rm ${
         !this.config.windows ? "--user $(id -u):$(id -g)" : ""
-      } -v ${directory}:/app composer create-project --prefer-dist laravel/laravel ${projectName}`,
+      } -v ${directory}:/app composer create-project --prefer-dist laravel/${
+        dbPrompt.projectType
+      } ${projectName}`,
       { silent: !flags.verbose }
     );
 
