@@ -1,5 +1,5 @@
 import * as inquirer from "inquirer";
-import { MYSQL, POSTGRES } from "../constants";
+import { MYSQL, POSTGRES, LARAVEL, LUMEN } from "../constants";
 
 type ThenArg<T> = T extends Promise<infer U> ? U : T;
 export type PromptEnvironmentDef = ThenArg<
@@ -8,6 +8,19 @@ export type PromptEnvironmentDef = ThenArg<
 
 export const promptEnvironment = async () => {
   const dbPrompt = await inquirer.prompt([
+    {
+      name: "projectType",
+      message: "What type of project you want to create?",
+      type: "list",
+      choices: [
+        {
+          name: LARAVEL
+        },
+        {
+          name: LUMEN
+        }
+      ]
+    },
     {
       name: "webPort",
       message: "What port would you like the app to be hosted on locally?",

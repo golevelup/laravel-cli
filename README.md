@@ -39,6 +39,7 @@ Unlike other tools in the ecosystem like Laradock and Vessel, the container imag
 - [x] Automatically configures XDebug
 - [x] Supports MySQL and Postgres environments
 - [x] Automatically configures Laravel ENV to connect to services in the Docker network
+- [x] Support both Laravel and Lumen projects
 
 # CLI
 

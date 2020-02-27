@@ -4,7 +4,7 @@ services:
   app:
     build:
       context: ./
-      dockerfile: environment/dockerfiles/app.dockerfile
+      dockerfile: environment/dockerfiles/laravel.dockerfile
       args:
         xdebug: "true"
         tinker: "true"
