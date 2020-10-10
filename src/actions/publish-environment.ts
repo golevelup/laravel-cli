@@ -4,7 +4,7 @@ import * as jsyaml from "js-yaml";
 import * as path from "path";
 import * as shelljs from "shelljs";
 import { PromptEnvironmentDef, readFileAsync, writeFileAsync } from ".";
-import { POSTGRES } from "../constants";
+import { MARIA, MYSQL, POSTGRES } from "../constants";
 import {
   DbServiceConfig,
   makeMySqlService,
@@ -13,6 +13,7 @@ import {
 import { mysqlDriverInstall, pSqlDriverInstall } from "./dockerfile-config";
 import { UpEnvironmentConfig } from "../types";
 import { makeRedisService } from "../services/redis";
+import { makeMariaDbService } from "../services/mariadb";
 
 export const publishEnvironment = async (
   location: string,
@@ -51,10 +52,14 @@ export const publishEnvironment = async (
       dbService = makePostgresService(dbConfig);
       await pSqlDriverInstall(location);
       break;
+    case MARIA:
+      dbService = makeMariaDbService(dbConfig);
+      await mysqlDriverInstall(location);
+      break;
+    case MYSQL:
     default:
       dbService = makeMySqlService(dbConfig);
       await mysqlDriverInstall(location);
-      break;
   }
 
   if (envConfig.webPort != 8080) {
