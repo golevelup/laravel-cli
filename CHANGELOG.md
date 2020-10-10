@@ -1,3 +1,15 @@
+## 0.5.4 (2020-10-10)
+
+### Bug Fixes
+
+- set port to 5432 for postgres container ([e954b78](https://github.com/golevelup/laravel-cli/commit/e954b78))
+
+### Features
+
+- add `art` alias for `artisan` ([50d423b](https://github.com/golevelup/laravel-cli/commit/50d423b)), closes [#11](https://github.com/golevelup/laravel-cli/issues/11) [#11](https://github.com/golevelup/laravel-cli/issues/11)
+- add maria as database option ([2aed6a2](https://github.com/golevelup/laravel-cli/commit/2aed6a2))
+- add option for redis container ([823f744](https://github.com/golevelup/laravel-cli/commit/823f744))
+
 ## [0.5.1](https://github.com/badassery/laravel-up/compare/v0.5.0...v0.5.1) (2019-10-13)
 
 ### Bug Fixes
