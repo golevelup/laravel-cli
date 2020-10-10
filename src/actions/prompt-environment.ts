@@ -37,7 +37,7 @@ export const promptEnvironment = async () => {
       name: "dbHostPort",
       message:
         "What port would you like the DB to be available on your host machine?",
-      default: 3306,
+      default: (prompt: any) => (prompt.engine === POSTGRES ? 5432 : 3306),
       type: "number"
     },
     {
