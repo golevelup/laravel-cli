@@ -51,6 +51,20 @@ export const promptEnvironment = async () => {
       message: "What is the database name?",
       default: "homestead",
       type: "input"
+    },
+    {
+      name: "redis",
+      message: "Would you like to add redis?",
+      default: false,
+      type: "confirm"
+    },
+    {
+      name: "redisPort",
+      message:
+        "What port would you like redis to be available on your host machine?",
+      default: 6379,
+      type: "number",
+      when: (prompt: any) => prompt.redis
     }
   ]);
 
