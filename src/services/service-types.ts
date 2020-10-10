@@ -5,3 +5,7 @@ export interface DbServiceConfig {
   database: string;
   password: string;
 }
+
+export interface RedisServiceConfig {
+  port: number;
+}

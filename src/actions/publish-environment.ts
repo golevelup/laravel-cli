@@ -12,6 +12,7 @@ import {
 } from "../services";
 import { mysqlDriverInstall, pSqlDriverInstall } from "./dockerfile-config";
 import { UpEnvironmentConfig } from "../types";
+import { makeRedisService } from "../services/redis";
 
 export const publishEnvironment = async (
   location: string,
@@ -64,6 +65,12 @@ export const publishEnvironment = async (
     ...composeYaml,
     services: { ...composeYaml.services, database: dbService }
   };
+
+  if (envConfig.redis) {
+    composeYaml.services.redis = makeRedisService({
+      port: envConfig.redisPort
+    });
+  }
 
   await writeFileAsync(destDockerComposePath, jsyaml.dump(composeYaml));
 
