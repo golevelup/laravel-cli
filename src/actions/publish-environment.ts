@@ -92,6 +92,10 @@ export const publishEnvironment = async (
     ["DB_PORT", envConfig.engine === POSTGRES ? 5432 : 3306]
   ];
 
+  if (envConfig.redis) {
+    envOverrides.push(["REDIS_HOST", "redis"]);
+  }
+
   envOverrides.forEach(([key, value]) => {
     envFileContents[key] = value;
     envExampleFileContents[key] = value;
