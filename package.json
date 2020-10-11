@@ -1,6 +1,6 @@
 {
   "name": "@golevelup/laravel-cli",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "A delightful CLI for Docker based Laravel developer environments and the cloud",
   "author": "Jesse Carter @WonderPanda",
   "private": false,
